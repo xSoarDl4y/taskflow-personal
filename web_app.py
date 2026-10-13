@@ -5,6 +5,40 @@ from datetime import date, timedelta
 import requests
 import streamlit as st
 from dotenv import load_dotenv
+from streamlit_cookies_manager import EncryptedCookieManager
+
+load_dotenv()
+
+API = os.getenv(
+    "API_BASE_URL",
+    "https://taskflow-personal.onrender.com"
+).rstrip("/")
+
+COOKIE_PASSWORD = os.getenv("COOKIE_PASSWORD", "")
+
+if not COOKIE_PASSWORD:
+    try:
+        COOKIE_PASSWORD = st.secrets["COOKIE_PASSWORD"]
+    except Exception:
+        COOKIE_PASSWORD = ""
+
+if not COOKIE_PASSWORD:
+    st.error("Thiếu COOKIE_PASSWORD. Hãy cấu hình trong .env hoặc Streamlit Secrets.")
+    st.stop()
+
+cookies = EncryptedCookieManager(
+    prefix="taskflow/",
+    password=COOKIE_PASSWORD,
+)
+
+if not cookies.ready():
+    st.stop()
+
+st.set_page_config(
+    page_title="TaskFlow Personal",
+    page_icon="✦",
+    layout="wide",
+)
 
 load_dotenv()
 API = os.getenv("API_BASE_URL", "https://taskflow-personal.onrender.com").rstrip("/")
@@ -221,15 +255,24 @@ def empty_state(icon, text):
 
 
 def set_session(result):
-    st.session_state.token = result["access_token"]
-    st.session_state.email = result["email"]
+    token = result["access_token"]
+    email = result["email"]
+
+    st.session_state.token = token
+    st.session_state.email = email
+
+    cookies["token"] = token
+    cookies["email"] = email
+    cookies.save()
+
     st.rerun()
 
 
 if "token" not in st.session_state:
-    st.session_state.token = ""
+    st.session_state.token = cookies.get("token", "")
+
 if "email" not in st.session_state:
-    st.session_state.email = ""
+    st.session_state.email = cookies.get("email", "")
 
 # ──────────────────────────────────────────────────────────────
 # Đăng nhập / Đăng ký
@@ -293,9 +336,14 @@ with st.sidebar:
     page = nav[choice]
     st.markdown("<hr>", unsafe_allow_html=True)
     if st.button("Đăng xuất", use_container_width=True):
-        st.session_state.token = ""
-        st.session_state.email = ""
-        st.rerun()
+    st.session_state.token = ""
+    st.session_state.email = ""
+
+    cookies["token"] = ""
+    cookies["email"] = ""
+    cookies.save()
+
+    st.rerun()
 
 today_iso = date.today().isoformat()
 
