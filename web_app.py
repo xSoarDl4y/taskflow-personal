@@ -335,7 +335,8 @@ with st.sidebar:
     choice = st.radio("Điều hướng", list(nav.keys()), label_visibility="collapsed")
     page = nav[choice]
     st.markdown("<hr>", unsafe_allow_html=True)
-    if st.button("Đăng xuất", use_container_width=True):
+    
+if st.button("Đăng xuất", use_container_width=True):
     st.session_state.token = ""
     st.session_state.email = ""
 
@@ -344,6 +345,7 @@ with st.sidebar:
     cookies.save()
 
     st.rerun()
+
 
 today_iso = date.today().isoformat()
 
