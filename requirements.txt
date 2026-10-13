@@ -10,3 +10,4 @@ requests>=2.32
 streamlit>=1.40
 openai>=1.50
 google-genai
+streamlit-cookies-manager
