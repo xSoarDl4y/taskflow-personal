@@ -7,7 +7,7 @@ import streamlit as st
 from dotenv import load_dotenv
 
 load_dotenv()
-API = os.getenv("API_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
+API = os.getenv("API_BASE_URL", "https://taskflow-personal.onrender.com").rstrip("/")
 
 st.set_page_config(page_title="TaskFlow Personal", page_icon="✦", layout="wide")
 

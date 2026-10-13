@@ -280,3 +280,43 @@ cd D:\taskflow_personal
 
 
 Cửa sổ ứng dụng Windows sẽ xuất hiện nếu code desktop đã được cập nhật và thư viện cần thiết đã cài.
+
+1. Quy trình cập nhật code
+Ví dụ, bạn vừa sửa web_app.py, backend/main.py hoặc thêm tính năng mới.
+Chạy trong Terminal tại D:\taskflow_personal
+git add .
+git commit -m "Update TaskFlow Personal"
+git push
+
+
+ Sao chép 3 lệnh
+Ý nghĩa:
+- git add . — chọn các thay đổi để đưa vào bản cập nhật.
+- git commit -m "Update TaskFlow Personal" — lưu lại một phiên bản mới.
+- git push — tải phiên bản mới lên GitHub.
+Bạn nên chạy các lệnh này sau khi đã kiểm tra code và thử chạy ứng dụng ở máy mình.
+2. Nếu muốn cập nhật một tính năng cụ thể
+Bạn có thể đặt tên commit dễ hiểu hơn:
+git add .
+git commit -m "Add task reminder feature"
+git push
+
+
+Hoặc:
+git add .
+git commit -m "Fix Gemini AI planning error"
+git push
+
+
+3. Nếu đã triển khai lên cloud thì sao?
+- GitHub: lưu mã nguồn mới.
+- Render: thường tự triển khai lại Backend khi bạn git push lên nhánh đã cấu hình.
+- Streamlit Community Cloud: thường tự cập nhật Frontend khi repository được cập nhật.
+Nếu tự động triển khai không chạy, hãy kiểm tra lịch sử deploy trên dashboard của dịch vụ tương ứng.
+4. Lưu ý quan trọng
+Trước khi chạy git add ., hãy đảm bảo .env không bị đưa lên GitHub. Bạn có thể kiểm tra:
+git status
+
+
+Nếu Git báo có xung đột hoặc git push bị từ chối, đừng cố chạy lặp lại các lệnh; hãy kiểm tra lỗi trước.
+Tóm lại: Mỗi lần sửa code xong, thông thường chỉ cần git add . → git commit → git push là đủ.
